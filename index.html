@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b55">
+  <title>BulisMalam | Absensi</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">MR</div>
+      <div>
+        <h2>Bulis Malam</h2>
+        <p>ADMIN DASHBOARD</p>
+      </div>
+    </div>
+
+    <div class="nav-label">MENU UTAMA</div>
+    <nav>
+      <button class="nav-link active" data-page="dashboard">
+        <span>▦</span> Dashboard
+      </button>
+      <button class="nav-link" data-page="absensi">
+        <span>✓</span> Absensi
+      </button>
+      <button class="nav-link" data-page="petugas">
+        <span>♙</span> Data Petugas
+      </button>
+      <button class="nav-link" data-page="rekap">
+        <span>▤</span> Rekap Kehadiran
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="profile-icon">A</div>
+      <div>
+        <strong>Muhamad Romdoni</strong>
+        <p>Pengelola Bulis malam</p>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button id="menuToggle" class="menu-toggle" aria-label="Buka menu">☰</button>
+      <div>
+        <p class="eyebrow">SISTEM ADMINISTRASI</p>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="year-badge">TA 2026/2027</div>
+    </header>
+
+    <section id="page-dashboard" class="page">
+      <div class="welcome">
+        <div>
+          <p class="welcome-label">SELAMAT DATANG</p>
+          <h2>Kelola bulis malam dengan lebih mudah.</h2>
+          <p>Catat kehadiran, kelola petugas, dan pantau rekap dalam satu tempat.</p>
+        </div>
+        <div class="welcome-symbol">✓</div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-icon green">♙</div>
+          <p>Total Petugas</p>
+          <h2 id="statPetugas">0</h2>
+          <span>Petugas terdaftar</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon blue">✓</div>
+          <p>Hadir</p>
+          <h2 id="statHadir">0</h2>
+          <span id="labelHadir">Bulan terpilih</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon red">×</div>
+          <p>Tidak Hadir</p>
+          <h2 id="statTidak">0</h2>
+          <span id="labelTidak">Bulan terpilih</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon orange">◷</div>
+          <p>Izin</p>
+          <h2 id="statIzin">0</h2>
+          <span id="labelIzin">Bulan terpilih</span>
+        </article>
+      </div>
+
+      <div class="content-grid">
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Ringkasan Kehadiran</h3>
+              <p>Statistik berdasarkan bulan yang dipilih</p>
+            </div>
+            <select id="dashboardBulan" aria-label="Bulan ringkasan"></select>
+          </div>
+          <div class="summary-chart" id="summaryChart"></div>
+          <div class="chart-legend">
+            <span><i class="dot dot-green"></i> Hadir</span>
+            <span><i class="dot dot-red"></i> Tidak Hadir</span>
+            <span><i class="dot dot-orange"></i> Izin</span>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Akses Cepat</h3>
+              <p>Menu yang sering digunakan</p>
+            </div>
+          </div>
+          <button class="quick-action" data-go="absensi">
+            <span class="quick-icon">✓</span>
+            <span><strong>Isi Absensi</strong><small>Catat kehadiran petugas</small></span>
+            <b>→</b>
+          </button>
+          <button class="quick-action" data-go="petugas">
+            <span class="quick-icon">♙</span>
+            <span><strong>Kelola Petugas</strong><small>Tambah atau ubah daftar petugas</small></span>
+            <b>→</b>
+          </button>
+          <button class="quick-action" data-go="rekap">
+            <span class="quick-icon">▤</span>
+            <span><strong>Lihat Rekap</strong><small>Periksa hasil kehadiran</small></span>
+            <b>→</b>
+          </button>
+        </article>
+      </div>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Aktivitas Absensi Terbaru</h3>
+            <p>Catatan absensi yang terakhir diperbarui</p>
+          </div>
+          <button class="btn btn-outline btn-small" data-go="absensi">Lihat Absensi</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Nama Petugas</th>
+                <th>Asrama</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recentTable"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section id="page-petugas" class="page hidden">
+      <div class="page-intro">
+        <div>
+          <h2>Data Petugas</h2>
+          <p>Daftarkan nama satu kali. Nama ini akan tersedia saat mengisi absensi.</p>
+        </div>
+        <button class="btn btn-primary" id="btnTambahPetugas">＋ Tambah Petugas</button>
+      </div>
+
+      <article class="panel">
+        <div class="toolbar">
+          <input id="cariPetugas" type="search" placeholder="Cari nama petugas...">
+          <select id="filterAsramaPetugas" aria-label="Filter asrama">
+            <option value="">Semua asrama</option>
+          </select>
+          <button class="btn btn-outline" id="exportPetugas">Ekspor CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Nama Petugas</th>
+                <th>Asrama</th>
+                <th>Tanggal Terdaftar</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="petugasTable"></tbody>
+          </table>
+        </div>
+        <p class="table-note" id="jumlahPetugas">0 petugas terdaftar</p>
+      </article>
+    </section>
+
+    <section id="page-absensi" class="page hidden">
+      <div class="page-intro">
+        <div>
+          <h2>Absensi Petugas</h2>
+          <p>Pilih tanggal untuk mengisi status petugas yang terdaftar.</p>
+        </div>
+      </div>
+
+      <article class="panel">
+        <div class="toolbar">
+          <div class="field">
+            <label for="tanggalAbsensi">Tanggal piket</label>
+            <input type="date" id="tanggalAbsensi">
+          </div>
+          <div class="field">
+            <label for="filterAsramaAbsensi">Asrama</label>
+            <select id="filterAsramaAbsensi">
+              <option value="">Semua asrama</option>
+            </select>
+          </div>
+          <div class="field grow">
+            <label for="cariAbsensi">Cari nama</label>
+            <input id="cariAbsensi" type="search" placeholder="Cari petugas...">
+          </div>
+          <button class="btn btn-primary" id="buatAbsensi">Buat Daftar Absensi</button>
+        </div>
+        <div class="notice">
+          <strong>Petunjuk:</strong> Daftar nama diambil dari Data Petugas. Pilih status setiap petugas, dan perubahan akan tersimpan otomatis di browser.
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Nama Petugas</th>
+                <th>Asrama</th>
+                <th>Status Kehadiran</th>
+              </tr>
+            </thead>
+            <tbody id="absensiTable"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="absensiCount">0 petugas</span>
+          <button class="btn btn-outline" id="exportAbsensi">Ekspor Absensi CSV</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="page-rekap" class="page hidden">
+      <div class="page-intro">
+        <div>
+          <h2>Rekap Kehadiran</h2>
+          <p>Rekap bulanan berdasarkan catatan absensi yang telah diisi.</p>
+        </div>
+        <button class="btn btn-primary" id="exportRekap">Ekspor Rekap CSV</button>
+      </div>
+
+      <article class="panel">
+        <div class="toolbar">
+          <div class="field">
+            <label for="rekapBulan">Bulan</label>
+            <select id="rekapBulan"></select>
+          </div>
+          <div class="field">
+            <label for="rekapAsrama">Asrama</label>
+            <select id="rekapAsrama">
+              <option value="">Semua asrama</option>
+            </select>
+          </div>
+          <div class="field grow">
+            <label for="cariRekap">Cari petugas</label>
+            <input id="cariRekap" type="search" placeholder="Cari nama petugas...">
+          </div>
+        </div>
+
+        <div class="stats-grid compact-stats">
+          <article class="stat-card">
+            <p>Total Catatan</p><h2 id="rekapTotal">0</h2>
+          </article>
+          <article class="stat-card">
+            <p>Hadir</p><h2 id="rekapHadir">0</h2>
+          </article>
+          <article class="stat-card">
+            <p>Tidak Hadir</p><h2 id="rekapTidak">0</h2>
+          </article>
+          <article class="stat-card">
+            <p>Izin</p><h2 id="rekapIzin">0</h2>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Nama Petugas</th>
+                <th>Asrama</th>
+                <th>Hadir</th>
+                <th>Tidak Hadir</th>
+                <th>Izin</th>
+                <th>Total Absensi</th>
+              </tr>
+            </thead>
+            <tbody id="rekapTable"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Ringkasan Per Asrama</h3>
+            <p>Akumulasi status absensi untuk bulan terpilih</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Asrama</th>
+                <th>Hadir</th>
+                <th>Tidak Hadir</th>
+                <th>Izin</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="rekapAsramaTable"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="petugasModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Tambah Petugas</h2>
+          <p>Masukkan data petugas piket malam.</p>
+        </div>
+        <button id="closeModal" class="close-btn" aria-label="Tutup">×</button>
+      </div>
+      <form id="petugasForm">
+        <input type="hidden" id="editPetugasId">
+        <div class="field">
+          <label for="namaPetugas">Nama lengkap</label>
+          <input id="namaPetugas" required maxlength="100" placeholder="Masukkan nama petugas">
+        </div>
+        <div class="field">
+          <label for="asramaPetugas">Asrama</label>
+          <select id="asramaPetugas" required>
+            <option value="Al Bahir 1">Al Bahir 1</option>
+            <option value="Al Bahir 2">Al Bahir 2</option>
+            <option value="Al Bahir 3">Al Bahir 3</option>
+            <option value="Al Izza 1">Al Izza 1</option>
+            <option value="Al Izza 2">Al Izza 2</option>
+            <option value="Al Izza 3">Al Izza 3</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="batalModal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Petugas</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
